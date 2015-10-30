@@ -5,6 +5,26 @@ import db
 client = MongoClient(db.conn_string)
 db = client.oscar
 
+# GET DIRECTORS
+def getDirectors(nominee):
+	director = db.boxoffice_movies.find_one({"name": nominee})	
+	name = ""
+
+	if director:
+		if len(director["directors"]) == 1:
+			name = director["directors"][0]
+		else:
+			for n in director["directors"]:
+				name += n + ", "
+
+			if name:
+				name = name[:-2]
+
+	if name == "":
+		name = None
+
+	return name
+
 # open saved results file from a search via http://awardsdatabase.oscars.org/
 with open ("results.html", "r") as results:
     data = results.read().replace('\n', '')
@@ -39,13 +59,25 @@ if dl:
 			nominee = child.get_text().split("--")[0].strip()
 
 			if nominee.startswith("*"):
+
+				name = nominee[1:]
+
+				if cat == "DIRECTING":
+					name = getDirectors(name)
+
 				nominees[year][cat].append({
-					"name": nominee[1:],
+					"name": name,
 					"won": True
 				})
 			else:
+
+				name = nominee
+
+				if cat == "DIRECTING":
+					name = getDirectors(name)
+
 				nominees[year][cat].append({
-					"name": nominee,
+					"name": name,
 					"won": False
 				})
 
