@@ -29,7 +29,7 @@ def getDirectors(nominee):
 	return name, director["boxOfficeId"]
 
 # open saved results file from a search via http://awardsdatabase.oscars.org/
-with open ("results.html", "r") as results:
+with open ("results2.html", "r") as results:
     data = results.read().replace('\n', '')
 
 # parse html file
@@ -98,7 +98,7 @@ if dl:
 				item["director"] = child.get_text().split("--")[1].strip()
 				director, item["boxOfficeId"] = getDirectors(nominee)
 
-			elif cat == "ART DIRECTION" or cat == "CINEMATOGRAPHY" or cat == "COSTUME DESIGN" or cat == "FILM EDITING" or cat == "FOREIGN LANGUAGE FILM" or cat == "MAKEUP" or cat == "MUSIC (Original Score)" or cat == "BEST PICTURE" or cat == "SOUND" or cat == "SOUND EDITING" or cat == "VISUAL EFFECTS" or cat == "WRITING (Screenplay Based on Material Previously Produced or Published)" or cat == "WRITING (Screenplay Written Directly for the Screen)":
+			elif cat == "ART DIRECTION" or cat == "CINEMATOGRAPHY" or cat == "COSTUME DESIGN" or cat == "FILM EDITING" or cat == "FOREIGN LANGUAGE FILM" or cat == "MAKEUP" or cat == "MUSIC (Original Score)" or cat == "BEST PICTURE" or cat == "SOUND" or cat == "SOUND EDITING" or cat == "VISUAL EFFECTS" or cat.startswith("WRITING"):
 
 				item["film"] = nominee
 				item["director"], item["boxOfficeId"] = getDirectors(nominee)
